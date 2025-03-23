@@ -3,8 +3,7 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Scanner;
+import java.util.*;
 
 import javax.swing.JOptionPane;
 
@@ -62,7 +61,6 @@ public class Student{
 
 
     public void enrollCourse(String course){
-        JOptionPane.showMessageDialog(null, "engaged!", "fuck", 0);
         try{
             File myobj=new File(regNo+".txt");
         if(myobj.exists()){
@@ -70,8 +68,6 @@ public class Student{
             writer.append("courses enrolled \n --------------------------------------------------");
             writer.flush();
             writer.append(course);
-            writer.flush();
-            writer.write("a fail not here:");
             writer.close();
             this.message="enrolling successful";
         }
@@ -87,60 +83,78 @@ public class Student{
         JOptionPane.showMessageDialog(null, message, "notification", JOptionPane.PLAIN_MESSAGE);
     }
 
-    //method for assigning results to various courses
-    public void assignStudentResults(String Code, int score){
-        courseCodeMarks.add("+"+"CourseCode : "+Code+"\t"+"score: "+score);
-        assignResults(regNo);
+ 
+//assign student scores
+public void assignStudentResults(String code, int score) {
+    try {
+        File myObj = new File(regNo + ".txt");
+        if (myObj.exists()) {
+            // Read registered courses
+            List<String> registeredCourses = new ArrayList<>();
+            Scanner scanner = new Scanner(myObj);
 
-    }
-    public void assignResults(String regNo){
-        try{
-            File myobj=new File(regNo+".txt");
-            if(myobj.exists()){
-                FileWriter writer=new FileWriter(regNo+".txt");
-                writer.write("results section \n --------------------------------------------------");
-                for(String marks:courseCodeMarks){
-                    writer.append(marks);
+            while (scanner.hasNextLine()) {
+                String line = scanner.nextLine();
+                if (line.startsWith("CourseCode: ")) {
+                    registeredCourses.add(line.split(":")[1].trim());
                 }
+            }
+            scanner.close();
+
+            // Check if the course is registered
+            if (registeredCourses.contains(code)) {
+                // Append results
+                FileWriter fw = new FileWriter(regNo + ".txt", true); // Enable append mode
+                BufferedWriter writer = new BufferedWriter(fw);
+
+                writer.newLine();
+                writer.write("--------------------------------------------------");
+                writer.newLine();
+                writer.write("Results Section:");
+                writer.newLine();
+                writer.write("CourseCode: " + code + " | Score: " + score);
+                writer.newLine();
                 writer.close();
-                this.message="assigned results successfully";
-            }
-            else{
-                this.message="unregistered student !";
-            }
 
+                this.message = "Results assigned successfully!";
+            } else {
+                this.message = "Error: Course " + code + " is not registered for this student!";
+            }
+        } else {
+            this.message = "Unregistered student!";
         }
-        catch(Exception e){
-            this.message="error assigning results ! ";
-            e.printStackTrace();
-        }
-
+    } catch (Exception e) {
+        this.message = "Error assigning results!";
+        e.printStackTrace();
     }
-
+}
 
     // method for searching a student
-    public void SearchStudent(){
-        try{
-            File myobj=new File(regNo+".txt");
-            if(myobj.exists()){
-                String details="";
-                Scanner scanner=new Scanner(myobj);
+    public void searchStudent() {
+        try {
+            File myObj = new File(regNo + ".txt");
+            
+            if (myObj.exists()) {
+                StringBuilder details = new StringBuilder();
+                Scanner scanner = new Scanner(myObj);
+                
                 while (scanner.hasNextLine()) {
-                    details=scanner.nextLine();  
+                    details.append(scanner.nextLine()).append("\n");
                 }
+                
                 scanner.close();
-                this.message="student exists ! \n"+details;
+                Reusable reusable = new Reusable(details.toString());
+                this.message = "Student exists!\n" + details;
+            } else {
+                this.message = "The student does not exist!";
             }
-            else{
-                this.message="the student does not exist ! ";
-            }
-
-        }
-        catch(Exception e){
-            this.message="error accessing student ! ";
+    
+        } catch (Exception e) {
+            this.message = "Error accessing student!";
             e.printStackTrace();
         }
     }
+    
 
 
 //method for retrieving students results

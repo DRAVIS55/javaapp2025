@@ -16,17 +16,18 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
+import javax.swing.*;
 
 
-public class StudentSystemGui extends JFrame{
+
+public class StudentGui extends JFrame{
     private JTextField regNoField,programmeField,fullnameField,emailField,phoneNoField;
     private JLabel label,regNoLabel,programmeLabel,fullnameLabel,emailLabel,phoneNoLabel;
-    private JButton button1,button2,button3,button4,button5,button6,submit;
+    private JButton button1,button2,button3,button4,button5,button6,submit,exit;
     private JPanel panel,formPanel;
-     private static final JCheckBox[] checkBoxes = new JCheckBox[10]; // Max 10 courses selectable
-    private static final JTextArea outputArea = new JTextArea(5, 30);
+    
 
-    public StudentSystemGui(){
+    public StudentGui(){
         super("student dashboard");
         setSize(400,400);
         setLayout(new BorderLayout());
@@ -56,6 +57,9 @@ public class StudentSystemGui extends JFrame{
          button2=new JButton("enroll  student to a course");
         button2.addActionListener(e->{
             String regNo=JOptionPane.showInputDialog("enter registration number");
+            while (regNo == null) { 
+                 regNo=JOptionPane.showInputDialog("enter registration number");
+            }
             CourseSelection selection=new CourseSelection(regNo);
         });
         gdc.gridx=1;
@@ -64,7 +68,7 @@ public class StudentSystemGui extends JFrame{
 
          button3=new JButton("assign scores ");
         button3.addActionListener(e->{
-            
+            ScoreAssignmentGUI score=new ScoreAssignmentGUI();
         });
         gdc.gridx=0;
         gdc.gridy=2;
@@ -72,7 +76,12 @@ public class StudentSystemGui extends JFrame{
 
          button4=new JButton("Search Student");
         button4.addActionListener(e->{
-            
+            String regNo=JOptionPane.showInputDialog("enter registration number");
+            while (regNo == null) { 
+                 regNo=JOptionPane.showInputDialog("enter registration number");
+            }
+            Student student=new Student(regNo);
+            student.searchStudent();
         });
         gdc.gridx=1;
         gdc.gridy=2;
@@ -80,7 +89,7 @@ public class StudentSystemGui extends JFrame{
 
          button5=new JButton("retrieve  results");
         button5.addActionListener(e->{
-            
+         
         });
         gdc.gridx=0;
         gdc.gridy=3;
@@ -99,12 +108,14 @@ public class StudentSystemGui extends JFrame{
     public static void main(String[] args) {
         try{
         SwingUtilities.invokeLater(()->{
-            new StudentSystemGui().setVisible(true);
+            new StudentGui().setVisible(true);
         });}
         catch(Exception e){
             e.printStackTrace();
         }
     }
+
+    
 
     
 
@@ -183,6 +194,14 @@ public class StudentSystemGui extends JFrame{
         gdc.gridx=1;
         gdc.gridy=6;
         formPanel.add(submit,gdc);
+        exit=new JButton("Exit");
+        exit.addActionListener(e->{
+            frame.dispose();
+        });
+        gdc.gridx=2;
+        gdc.gridy=9;
+        formPanel.add(exit,gdc);
+        
 
         submit.addActionListener(new ActionListener() {
             @Override
@@ -203,7 +222,29 @@ public class StudentSystemGui extends JFrame{
     
 }
 
+class Reusable extends JFrame{
 
+    public  Reusable(String Message){
+        JFrame frame=new JFrame();
+        frame.setLayout(new BorderLayout());
+        frame.setSize(800,400);
+        frame.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+        frame.setVisible(true);
+
+        JTextField text=new JTextField();
+        text.setEditable(false);
+        frame.add(text,BorderLayout.CENTER);
+        text.setText(Message);
+
+        JButton button=new JButton("Close");
+        button.addActionListener(e->{
+            frame.dispose();
+            
+        });
+        frame.add(button,BorderLayout.SOUTH);
+
+    }
+}
 
 
  class CourseSelection {
@@ -304,6 +345,7 @@ public class StudentSystemGui extends JFrame{
         return selectedCourses;
     }
 
+
     // Sample Course Data
     public Map<String, String> eb1Courses() {
         Map<String, String> courses = new HashMap<>();
@@ -317,3 +359,113 @@ public class StudentSystemGui extends JFrame{
 
     
 }
+
+
+
+
+class ScoreAssignmentGUI {
+    public ScoreAssignmentGUI() {
+        // Create JFrame
+        JFrame frame = new JFrame("Assign Student Score");
+        frame.setSize(800, 400);
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        frame.setLayout(new BorderLayout());
+
+        // Create Main Panel
+        JPanel panel = new JPanel(new GridLayout(6, 2, 10, 10));
+
+        // Create UI Components
+        JLabel lblProgramme = new JLabel("Programme Code:");
+        JTextField txtProgramme = new JTextField();
+
+        JLabel lblRegNo = new JLabel("Registration No:");
+        JTextField txtRegNo = new JTextField();
+
+        JLabel lblCourse = new JLabel("Course Code:");
+        JTextField txtCourse = new JTextField();
+
+        JLabel lblScore = new JLabel("Score:");
+        JTextField txtScore = new JTextField();
+
+        JButton btnSubmit = new JButton("Assign Score");
+        JLabel lblMessage = new JLabel("", SwingConstants.CENTER);
+
+        // Add Components to Panel
+        panel.add(lblProgramme);
+        panel.add(txtProgramme);
+        panel.add(lblRegNo);
+        panel.add(txtRegNo);
+        panel.add(lblCourse);
+        panel.add(txtCourse);
+        panel.add(lblScore);
+        panel.add(txtScore);
+        panel.add(btnSubmit);
+        panel.add(lblMessage);
+
+        // Create Exit Button
+        JButton btnExit = new JButton("Exit");
+        JPanel bottomPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT)); // Aligns the button to the right
+        bottomPanel.add(btnExit);
+
+        // Add Components to Frame
+        frame.add(panel, BorderLayout.CENTER);
+        frame.add(bottomPanel, BorderLayout.SOUTH);
+
+        // Button ActionListener for Submit
+        btnSubmit.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String programmeCode = txtProgramme.getText().trim();
+                String regNo = txtRegNo.getText().trim();
+                String courseCode = txtCourse.getText().trim();
+                String scoreText = txtScore.getText().trim();
+
+                // Validate input
+                if (programmeCode.isEmpty() || regNo.isEmpty() || courseCode.isEmpty() || scoreText.isEmpty()) {
+                    lblMessage.setText("All fields are required!");
+                    lblMessage.setForeground(Color.RED);
+                    return;
+                }
+
+                // Validate score as integer
+                int score;
+                try {
+                    score = Integer.parseInt(scoreText);
+                    if (score < 0 || score > 100) {
+                        lblMessage.setText("Score must be between 0 and 100!");
+                        lblMessage.setForeground(Color.RED);
+                        return;
+                    }
+                } catch (NumberFormatException ex) {
+                    lblMessage.setText("Invalid score! Enter a number.");
+                    lblMessage.setForeground(Color.RED);
+                    return;
+                }
+
+                // Assign score using Course class
+                Course course = new Course();
+                String result = course.assignScore(programmeCode, regNo, courseCode, score);
+
+                // Display result
+                lblMessage.setText(result);
+                lblMessage.setForeground(result.contains("Error") ? Color.RED : Color.GREEN);
+            }
+        });
+
+        // Button ActionListener for Exit
+        btnExit.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                frame.dispose(); // Close the window
+            }
+        });
+
+        // Show Frame
+        frame.setVisible(true);
+    }
+
+
+}
+
+
+ 
