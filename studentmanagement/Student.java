@@ -11,17 +11,20 @@ import javax.swing.JOptionPane;
 
 //class Student
 public class Student{
-    public String regNo;
-    public String fullname;
-    public String programme;
-    public String email;
-    public String phoneNo;
-    public ArrayList<String> courseCode;
-    public ArrayList<String> courseCodeMarks;
-    public String message="";
+    private String regNo;
+    private String fullname;
+    private String programme;
+    private String email;
+    private String phoneNo;
+    private ArrayList<String> courseCode;
+    private ArrayList<String> courseCodeMarks;
+    public String message = "";  // Made public to access from GUI
 
     //constructor for class student
     public Student(String regNo){
+        if (!AdminGUI.isValidRegNo(regNo)) {
+            throw new IllegalArgumentException("Invalid registration number format. Use format: EB1/66784/23");
+        }
         this.regNo=regNo;
         this.courseCode=new ArrayList<>(); 
         this.courseCodeMarks=new ArrayList<>(); 
@@ -34,7 +37,7 @@ public class Student{
         this.programme=programme;
         this.email=email;
         this.phoneNo=phoneNo;
-       String filename = regNo + ".txt";
+       String filename = regNo.replace("/", "_") + ".txt";
         File file = new File(filename);
 
         try {
@@ -49,7 +52,7 @@ public class Student{
                     myWriter.flush();
                     myWriter.write("Email: " + email + "\n");
                     myWriter.flush();
-                    myWriter.write("Phone No: " + phoneNo + "\n");
+                    myWriter.write("Phone: " + phoneNo + "\n");
                 }
                 this.message = "Successfully registered: " + regNo;
             } else {

@@ -207,15 +207,48 @@ public class StudentGui extends JFrame{
         submit.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e){
-                String regNo =regNoField.getText();
-                String fullname =fullnameField.getText();
-                String programme =programmeField.getText();
-                String email = emailField.getText();
-                String phoneNo = phoneNoField.getText();
-                Student s=new Student(regNo);
-                s.registerStudent(fullname,programme,email,phoneNo);
-                JOptionPane.showMessageDialog(null, s.message, "notification", JOptionPane.PLAIN_MESSAGE);
-                
+                String regNo = regNoField.getText().trim();
+                String fullname = fullnameField.getText().trim();
+                String programme = programmeField.getText().trim();
+                String email = emailField.getText().trim();
+                String phoneNo = phoneNoField.getText().trim();
+
+                // Validate registration number format
+                if (!AdminGUI.isValidRegNo(regNo)) {
+                    JOptionPane.showMessageDialog(null, 
+                        "Invalid registration number format. Use format: EB1/66784/23", 
+                        "Error", 
+                        JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+
+                // Validate other fields
+                if (fullname.isEmpty() || programme.isEmpty() || email.isEmpty() || phoneNo.isEmpty()) {
+                    JOptionPane.showMessageDialog(null, 
+                        "All fields are required!", 
+                        "Error", 
+                        JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+
+                try {
+                    Student s = new Student(regNo);
+                    s.registerStudent(fullname, programme, email, phoneNo);
+                    JOptionPane.showMessageDialog(null, s.message, "notification", JOptionPane.PLAIN_MESSAGE);
+                    
+                    // Clear fields after successful registration
+                    regNoField.setText("");
+                    fullnameField.setText("");
+                    programmeField.setText("");
+                    emailField.setText("");
+                    phoneNoField.setText("");
+                    regNoField.requestFocus();
+                } catch (IllegalArgumentException ex) {
+                    JOptionPane.showMessageDialog(null, 
+                        ex.getMessage(), 
+                        "Error", 
+                        JOptionPane.ERROR_MESSAGE);
+                }
             }
         });   
     }

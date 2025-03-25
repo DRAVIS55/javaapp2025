@@ -12,6 +12,7 @@ public class AdminGUI extends JFrame {
     private static final Pattern PROGRAMME_CODE_PATTERN = Pattern.compile("^(eb1|eb2|eb3|cb1)$", Pattern.CASE_INSENSITIVE);
     private static final Pattern COURSE_CODE_PATTERN = Pattern.compile("^[A-Z]{4}\\d{3}$");
     private static final Pattern LECTURER_ID_PATTERN = Pattern.compile("^[A-Z]{2}\\d{3}$");
+    private static final Pattern REG_NO_PATTERN = Pattern.compile("^(EB1|EB2|EB3|CB1)/\\d{5}/\\d{2}$");
 
     public AdminGUI() {
         setTitle("Admin Panel");
@@ -88,6 +89,10 @@ public class AdminGUI extends JFrame {
 
     public static boolean isValidLecturerID(String id) {
         return LECTURER_ID_PATTERN.matcher(id).matches();
+    }
+
+    public static boolean isValidRegNo(String regNo) {
+        return REG_NO_PATTERN.matcher(regNo).matches();
     }
 }
 
