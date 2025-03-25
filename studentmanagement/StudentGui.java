@@ -9,6 +9,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
+import javax.swing.CardLayout;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -21,89 +22,95 @@ import javax.swing.*;
 
 
 
-public class StudentGui extends JFrame{
-    private JTextField regNoField,programmeField,fullnameField,emailField,phoneNoField;
-    private JLabel label,regNoLabel,programmeLabel,fullnameLabel,emailLabel,phoneNoLabel;
-    private JButton button1,button2,button3,button4,button5,button6,submit,exit;
-    private JPanel panel,formPanel;
+public class StudentGui extends JPanel {
+    private JTextField regNoField, programmeField, fullnameField, emailField, phoneNoField;
+    private JLabel label, regNoLabel, programmeLabel, fullnameLabel, emailLabel, phoneNoLabel;
+    private JButton button1, button2, button3, button4, button5, button6, submit, exit, btnBack;
+    private JPanel panel, formPanel;
     
 
-    public StudentGui(){
-        super("student dashboard");
-        setSize(400,400);
+    public StudentGui() {
         setLayout(new BorderLayout());
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
         
-         panel=new JPanel(new GridBagLayout());
+        // Back Button Panel
+        JPanel backPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        btnBack = new JButton("Back to Login");
+        btnBack.addActionListener(e -> {
+            CardLayout cl = (CardLayout) getParent().getLayout();
+            cl.show(getParent(), "login");
+        });
+        backPanel.add(btnBack);
+        add(backPanel, BorderLayout.NORTH);
+        
+        panel = new JPanel(new GridBagLayout());
         panel.setBackground(Color.white);
-        add(panel,BorderLayout.CENTER);
-        GridBagConstraints gdc=new GridBagConstraints();
-        gdc.insets=new Insets(10,10, 10,10);
-        gdc.fill=GridBagConstraints.HORIZONTAL;
+        add(panel, BorderLayout.CENTER);
+        
+        GridBagConstraints gdc = new GridBagConstraints();
+        gdc.insets = new Insets(10, 10, 10, 10);
+        gdc.fill = GridBagConstraints.HORIZONTAL;
 
-        label=new JLabel();
+        label = new JLabel();
         label.setText("Students Panel");
-        label.setSize(10,10);
-        gdc.gridx=1;
-        gdc.gridy=0;
-        panel.add(label,gdc);
+        label.setSize(10, 10);
+        gdc.gridx = 1;
+        gdc.gridy = 0;
+        panel.add(label, gdc);
 
-         button1=new JButton("Register Student");
-        button1.addActionListener(e->{
-           registerGui(); });
-        gdc.gridx=0;
-        gdc.gridy=1;
-        panel.add(button1,gdc);
+        button1 = new JButton("Register Student");
+        button1.addActionListener(e -> registerGui());
+        gdc.gridx = 0;
+        gdc.gridy = 1;
+        panel.add(button1, gdc);
 
-         button2=new JButton("enroll  student to a course");
-        button2.addActionListener(e->{
-            String regNo=JOptionPane.showInputDialog("enter registration number");
+        button2 = new JButton("enroll student to a course");
+        button2.addActionListener(e -> {
+            String regNo = JOptionPane.showInputDialog("enter registration number");
             while (regNo == null) { 
-                 regNo=JOptionPane.showInputDialog("enter registration number");
+                regNo = JOptionPane.showInputDialog("enter registration number");
             }
-            CourseSelection selection=new CourseSelection(regNo);
+            CourseSelection selection = new CourseSelection(regNo);
         });
-        gdc.gridx=1;
-        gdc.gridy=1;
-        panel.add(button2,gdc);
+        gdc.gridx = 1;
+        gdc.gridy = 1;
+        panel.add(button2, gdc);
 
-         button3=new JButton("assign scores ");
-        button3.addActionListener(e->{
-            ScoreAssignmentGUI score=new ScoreAssignmentGUI();
+        button3 = new JButton("assign scores ");
+        button3.addActionListener(e -> {
+            ScoreAssignmentGUI score = new ScoreAssignmentGUI();
         });
-        gdc.gridx=0;
-        gdc.gridy=2;
-        panel.add(button3,gdc);
+        gdc.gridx = 0;
+        gdc.gridy = 2;
+        panel.add(button3, gdc);
 
-         button4=new JButton("Search Student");
-        button4.addActionListener(e->{
-            String regNo=JOptionPane.showInputDialog("enter registration number");
+        button4 = new JButton("Search Student");
+        button4.addActionListener(e -> {
+            String regNo = JOptionPane.showInputDialog("enter registration number");
             while (regNo == null) { 
-                 regNo=JOptionPane.showInputDialog("enter registration number");
+                regNo = JOptionPane.showInputDialog("enter registration number");
             }
-            Student student=new Student(regNo);
+            Student student = new Student(regNo);
             student.searchStudent();
         });
-        gdc.gridx=1;
-        gdc.gridy=2;
-        panel.add(button4,gdc);
+        gdc.gridx = 1;
+        gdc.gridy = 2;
+        panel.add(button4, gdc);
 
-         button5=new JButton("retrieve  results");
-        button5.addActionListener(e->{
-         
+        button5 = new JButton("retrieve results");
+        button5.addActionListener(e -> {
+            // Implementation for retrieve results
         });
-        gdc.gridx=0;
-        gdc.gridy=3;
-        panel.add(button5,gdc);
-         button6=new JButton("update results");
-        button6.addActionListener(e->{
-            
+        gdc.gridx = 0;
+        gdc.gridy = 3;
+        panel.add(button5, gdc);
+        
+        button6 = new JButton("update results");
+        button6.addActionListener(e -> {
+            // Implementation for update results
         });
-        gdc.gridx=1;
-        gdc.gridy=3;
-        panel.add(button6,gdc);
-
-
+        gdc.gridx = 1;
+        gdc.gridy = 3;
+        panel.add(button6, gdc);
     }
 
     public static void main(String[] args) {
@@ -120,137 +127,138 @@ public class StudentGui extends JFrame{
 
     
 
-    public void registerGui(){
-        JFrame frame=new JFrame();
+    public void registerGui() {
+        JFrame frame = new JFrame("Student Registration");
         frame.setLayout(new BorderLayout());
-        frame.setSize(700,500);
-        frame.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-        frame.setVisible(true);
+        frame.setSize(700, 500);
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        frame.setLocationRelativeTo(null);  // Center the frame on screen
 
-        formPanel=new JPanel(new GridBagLayout());
-        GridBagConstraints gdc=new GridBagConstraints();
-        gdc.insets=new Insets(10,10, 10,10);
-        gdc.fill=GridBagConstraints.HORIZONTAL;
-        frame.add(formPanel,BorderLayout.CENTER);
+        formPanel = new JPanel(new GridBagLayout());
+        GridBagConstraints gdc = new GridBagConstraints();
+        gdc.insets = new Insets(10, 10, 10, 10);
+        gdc.fill = GridBagConstraints.HORIZONTAL;
+        frame.add(formPanel, BorderLayout.CENTER);
 
- // Registration Number
-  regNoLabel = new JLabel("Registration Number:");
- gdc.gridx = 0;
- gdc.gridy = 1;
- gdc.weightx = 0.3; // Less space for label
- formPanel.add(regNoLabel, gdc);
+        // Registration Number
+        regNoLabel = new JLabel("Registration Number:");
+        gdc.gridx = 0;
+        gdc.gridy = 1;
+        gdc.weightx = 0.3; // Less space for label
+        formPanel.add(regNoLabel, gdc);
 
- regNoField = new JTextField();
- regNoField.setPreferredSize(new Dimension(200, 30)); // Set large width
- gdc.gridx = 1;
- gdc.weightx = 1; // More space for input
- formPanel.add(regNoField, gdc);
+        regNoField = new JTextField();
+        regNoField.setPreferredSize(new Dimension(200, 30)); // Set large width
+        gdc.gridx = 1;
+        gdc.weightx = 1; // More space for input
+        formPanel.add(regNoField, gdc);
 
- // Full Name
- fullnameLabel = new JLabel("Full Name:");
- gdc.gridx = 0;
- gdc.gridy = 2;
- gdc.weightx = 0.3;
- formPanel.add(fullnameLabel, gdc);
+        // Full Name
+        fullnameLabel = new JLabel("Full Name:");
+        gdc.gridx = 0;
+        gdc.gridy = 2;
+        gdc.weightx = 0.3;
+        formPanel.add(fullnameLabel, gdc);
 
- fullnameField = new JTextField();
- fullnameField.setPreferredSize(new Dimension(200, 30));
- gdc.gridx = 1;
- gdc.weightx = 1;
- formPanel.add(fullnameField, gdc);
+        fullnameField = new JTextField();
+        fullnameField.setPreferredSize(new Dimension(200, 30));
+        gdc.gridx = 1;
+        gdc.weightx = 1;
+        formPanel.add(fullnameField, gdc);
 
- // Programme
- programmeLabel = new JLabel("Programme:");
- gdc.gridx = 0;
- gdc.gridy = 3;
- formPanel.add(programmeLabel, gdc);
+        // Programme
+        programmeLabel = new JLabel("Programme:");
+        gdc.gridx = 0;
+        gdc.gridy = 3;
+        formPanel.add(programmeLabel, gdc);
 
-  programmeField = new JTextField();
- programmeField.setPreferredSize(new Dimension(200, 30));
- gdc.gridx = 1;
- formPanel.add(programmeField, gdc);
+        programmeField = new JTextField();
+        programmeField.setPreferredSize(new Dimension(200, 30));
+        gdc.gridx = 1;
+        formPanel.add(programmeField, gdc);
 
- // Email
- emailLabel = new JLabel("Email:");
- gdc.gridx = 0;
- gdc.gridy = 4;
- formPanel.add(emailLabel, gdc);
+        // Email
+        emailLabel = new JLabel("Email:");
+        gdc.gridx = 0;
+        gdc.gridy = 4;
+        formPanel.add(emailLabel, gdc);
 
- emailField = new JTextField();
- emailField.setPreferredSize(new Dimension(200, 30));
- gdc.gridx = 1;
- formPanel.add(emailField, gdc);
+        emailField = new JTextField();
+        emailField.setPreferredSize(new Dimension(200, 30));
+        gdc.gridx = 1;
+        formPanel.add(emailField, gdc);
 
- // Phone Number
- phoneNoLabel = new JLabel("Phone Number:");
- gdc.gridx = 0;
- gdc.gridy = 5;
- formPanel.add(phoneNoLabel, gdc);
+        // Phone Number
+        phoneNoLabel = new JLabel("Phone Number:");
+        gdc.gridx = 0;
+        gdc.gridy = 5;
+        formPanel.add(phoneNoLabel, gdc);
 
-  phoneNoField = new JTextField();
- phoneNoField.setPreferredSize(new Dimension(200, 30));
- gdc.gridx = 1;
- formPanel.add(phoneNoField, gdc);
-        submit=new JButton("SUBMIT");
-        gdc.gridx=1;
-        gdc.gridy=6;
-        formPanel.add(submit,gdc);
-        exit=new JButton("Exit");
-        exit.addActionListener(e->{
-            frame.dispose();
-        });
-        gdc.gridx=2;
-        gdc.gridy=9;
-        formPanel.add(exit,gdc);
-        
+        phoneNoField = new JTextField();
+        phoneNoField.setPreferredSize(new Dimension(200, 30));
+        gdc.gridx = 1;
+        formPanel.add(phoneNoField, gdc);
 
-        submit.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e){
-                String regNo = regNoField.getText().trim();
-                String fullname = fullnameField.getText().trim();
-                String programme = programmeField.getText().trim();
-                String email = emailField.getText().trim();
-                String phoneNo = phoneNoField.getText().trim();
+        // Submit Button
+        submit = new JButton("SUBMIT");
+        gdc.gridx = 1;
+        gdc.gridy = 6;
+        formPanel.add(submit, gdc);
 
-                // Validate registration number format
-                if (!AdminGUI.isValidRegNo(regNo)) {
-                    JOptionPane.showMessageDialog(null, 
-                        "Invalid registration number format. Use format: EB1/66784/23", 
-                        "Error", 
-                        JOptionPane.ERROR_MESSAGE);
-                    return;
-                }
+        // Exit Button
+        exit = new JButton("Exit");
+        exit.addActionListener(e -> frame.dispose());
+        gdc.gridx = 2;
+        gdc.gridy = 6;
+        formPanel.add(exit, gdc);
 
-                // Validate other fields
-                if (fullname.isEmpty() || programme.isEmpty() || email.isEmpty() || phoneNo.isEmpty()) {
-                    JOptionPane.showMessageDialog(null, 
-                        "All fields are required!", 
-                        "Error", 
-                        JOptionPane.ERROR_MESSAGE);
-                    return;
-                }
+        // Submit Button Action
+        submit.addActionListener(e -> {
+            String regNo = regNoField.getText().trim();
+            String fullname = fullnameField.getText().trim();
+            String programme = programmeField.getText().trim();
+            String email = emailField.getText().trim();
+            String phoneNo = phoneNoField.getText().trim();
 
-                try {
-                    Student s = new Student(regNo);
-                    s.registerStudent(fullname, programme, email, phoneNo);
-                    JOptionPane.showMessageDialog(null, s.message, "notification", JOptionPane.PLAIN_MESSAGE);
-                    
-                    // Clear fields after successful registration
-                    regNoField.setText("");
-                    fullnameField.setText("");
-                    programmeField.setText("");
-                    emailField.setText("");
-                    phoneNoField.setText("");
-                    regNoField.requestFocus();
-                } catch (IllegalArgumentException ex) {
-                    JOptionPane.showMessageDialog(null, 
-                        ex.getMessage(), 
-                        "Error", 
-                        JOptionPane.ERROR_MESSAGE);
-                }
+            // Validate registration number format
+            if (!AdminGUI.isValidRegNo(regNo)) {
+                JOptionPane.showMessageDialog(frame, 
+                    "Invalid registration number format. Use format: EB1/66784/23", 
+                    "Error", 
+                    JOptionPane.ERROR_MESSAGE);
+                return;
             }
-        });   
+
+            // Validate other fields
+            if (fullname.isEmpty() || programme.isEmpty() || email.isEmpty() || phoneNo.isEmpty()) {
+                JOptionPane.showMessageDialog(frame, 
+                    "All fields are required!", 
+                    "Error", 
+                    JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            try {
+                Student s = new Student(regNo);
+                s.registerStudent(fullname, programme, email, phoneNo);
+                JOptionPane.showMessageDialog(frame, s.message, "notification", JOptionPane.PLAIN_MESSAGE);
+                
+                // Clear fields after successful registration
+                regNoField.setText("");
+                fullnameField.setText("");
+                programmeField.setText("");
+                emailField.setText("");
+                phoneNoField.setText("");
+                regNoField.requestFocus();
+            } catch (IllegalArgumentException ex) {
+                JOptionPane.showMessageDialog(frame, 
+                    ex.getMessage(), 
+                    "Error", 
+                    JOptionPane.ERROR_MESSAGE);
+            }
+        });
+
+        frame.setVisible(true);
     }
    
     

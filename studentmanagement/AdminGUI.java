@@ -7,19 +7,24 @@ import java.awt.event.KeyEvent;
 import java.io.IOException;
 import java.util.regex.Pattern;
 
-public class AdminGUI extends JFrame {
-    private JButton btnAttachProgram, btnAssignLecturer, btnExit;
+public class AdminGUI extends JPanel {
+    private JButton btnAttachProgram, btnAssignLecturer, btnExit, btnBack;
     private static final Pattern PROGRAMME_CODE_PATTERN = Pattern.compile("^(eb1|eb2|eb3|cb1)$", Pattern.CASE_INSENSITIVE);
     private static final Pattern COURSE_CODE_PATTERN = Pattern.compile("^[A-Z]{4}\\d{3}$");
     private static final Pattern LECTURER_ID_PATTERN = Pattern.compile("^[A-Z]{2}\\d{3}$");
     private static final Pattern REG_NO_PATTERN = Pattern.compile("^(EB1|EB2|EB3|CB1)/\\d{5}/\\d{2}$");
 
     public AdminGUI() {
-        setTitle("Admin Panel");
-        setSize(600, 400);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new FlowLayout());
-        setLocationRelativeTo(null);
+        
+        // Back Button
+        btnBack = new JButton("Back to Login");
+        btnBack.setMnemonic(KeyEvent.VK_B);
+        btnBack.addActionListener(e -> {
+            CardLayout cl = (CardLayout) getParent().getLayout();
+            cl.show(getParent(), "login");
+        });
+        add(btnBack);
 
         // Attach Program Button
         btnAttachProgram = new JButton("Attach Program");
@@ -64,18 +69,10 @@ public class AdminGUI extends JFrame {
                 "Confirm Exit",
                 JOptionPane.YES_NO_OPTION);
             if (choice == JOptionPane.YES_OPTION) {
-                dispose();
+                System.exit(0);
             }
         });
         add(btnExit);
-
-        // Set default button
-        getRootPane().setDefaultButton(btnAttachProgram);
-        setVisible(true);
-    }
-
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(AdminGUI::new);
     }
 
     // Validation methods

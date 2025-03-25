@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<VBox alignment="CENTER" spacing="20" styleClass="login-container">
+    <padding>
+        <Insets top="40" right="40" bottom="40" left="40"/>
+    </padding>
+
+    <Label text="Student Management System" styleClass="title-label"/>
+    
+    <VBox spacing="15" styleClass="login-form">
+        <Label text="Login As:" styleClass="subtitle-label"/>
+        
+        <HBox spacing="20" alignment="CENTER">
+            <Button fx:id="adminButton" text="Admin" styleClass="login-button" onAction="#handleAdminLogin"/>
+            <Button fx:id="studentButton" text="Student" styleClass="login-button" onAction="#handleStudentLogin"/>
+        </HBox>
+    </VBox>
+</VBox> 
