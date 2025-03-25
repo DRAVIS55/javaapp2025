@@ -1,4 +1,6 @@
+package studentmanagement;
 import javax.swing.*;
+
 import java.awt.*;
 
 public class LoginPanelGUI extends JFrame {

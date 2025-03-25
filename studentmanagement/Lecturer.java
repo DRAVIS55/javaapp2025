@@ -1,3 +1,4 @@
+package studentmanagement;
 public class Lecturer extends Person{
     private String name;
     public Lecturer(){}

@@ -1,3 +1,5 @@
+package studentmanagement;
+
 //imports
 import java.io.BufferedWriter;
 import java.io.File;

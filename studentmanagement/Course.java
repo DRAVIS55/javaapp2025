@@ -1,3 +1,5 @@
+package studentmanagement;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.io.FileWriter;
@@ -101,13 +103,14 @@ public class Course {
         courseName = courseName.trim();
     
         // Select the correct programme map
-        Map<String, String> selectedProgramme = switch (programmeCode) {
-            case "eb1" -> eb1;
-            case "cb1" -> cb1;
-            case "eb2" -> eb2;
-            case "eb3" -> eb3;
-            default -> null;
-        };
+        Map<String, String> selectedProgramme;
+        switch (programmeCode) {
+            case "eb1": selectedProgramme = eb1; break;
+            case "cb1": selectedProgramme = cb1; break;
+            case "eb2": selectedProgramme = eb2; break;
+            case "eb3": selectedProgramme = eb3; break;
+            default: selectedProgramme = null;
+        }
     
         // Validate programme code
         if (selectedProgramme == null) {
