@@ -84,3 +84,47 @@ The system manages students, lecturers, courses, and programmes. It provides fun
 ---
 ### 🚀 *Developed for the award of COC 223 Java Programming*
 
+# Student Management System
+
+A Java-based student management system with a modern GUI interface.
+
+## Prerequisites
+
+- Java 8 or later
+- Maven
+
+## Installation
+
+1. Download and extract the project files
+2. Double-click `install.bat`
+3. The installer will:
+   - Check if Java and Maven are installed
+   - Build the project
+   - Create a desktop shortcut automatically
+
+## Running the Application
+
+After installation, you can run the application by:
+1. Double-clicking the "Student Management System" shortcut on your desktop
+2. Or running `run_student_management.bat` from the project directory
+
+## Features
+
+- Student registration
+- Course management
+- Score assignment
+- Result retrieval
+- Admin and Student interfaces
+
+## Troubleshooting
+
+If you encounter any issues:
+1. Make sure Java 8 or later is installed
+2. Make sure Maven is installed
+3. Check that both are properly added to your system's PATH
+4. Try running the installer again
+
+## Support
+
+For any issues or questions, please create an issue in the GitHub repository.
+
