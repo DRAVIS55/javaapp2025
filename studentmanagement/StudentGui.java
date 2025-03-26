@@ -9,7 +9,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
-import javax.swing.CardLayout;
+import javax.swing.SwingConstants;
+import java.awt.CardLayout;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -18,9 +19,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
-import javax.swing.*;
-
-
 
 public class StudentGui extends JPanel {
     private JTextField regNoField, programmeField, fullnameField, emailField, phoneNoField;
