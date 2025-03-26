@@ -18,6 +18,29 @@ echo ║                     Student Management System Installer                
 echo ╚════════════════════════════════════════════════════════════════════════════╝%RESET%
 echo.
 
+:: Show menu
+echo %YELLOW%Please select an option:%RESET%
+echo 1. Install Student Management System
+echo 2. Uninstall Student Management System
+echo 3. Exit
+echo.
+set /p "CHOICE=Enter your choice (1-3): "
+
+if "%CHOICE%"=="2" (
+    call uninstall.bat
+    exit /b 0
+)
+
+if "%CHOICE%"=="3" (
+    exit /b 0
+)
+
+if not "%CHOICE%"=="1" (
+    echo %RED%Invalid choice. Exiting...%RESET%
+    pause
+    exit /b 1
+)
+
 :: Check Java
 echo %YELLOW%Checking Java installation...%RESET%
 java -version >nul 2>&1
@@ -60,9 +83,10 @@ echo %YELLOW%Creating desktop shortcut...%RESET%
 set "DESKTOP=%USERPROFILE%\Desktop"
 set "SHORTCUT=%DESKTOP%\Student Management System.lnk"
 set "BATCH_PATH=%~dp0run_student_management.bat"
+set "ICON_PATH=%~dp0chuka2.ico"
 
-:: Create shortcut with icon
-powershell -Command "$WS = New-Object -ComObject WScript.Shell; $SC = $WS.CreateShortcut('%SHORTCUT%'); $SC.TargetPath = '%BATCH_PATH%'; $SC.WorkingDirectory = '%~dp0'; $SC.IconLocation = 'shell32.dll,0'; $SC.Save()"
+:: Create shortcut with custom icon
+powershell -Command "$WS = New-Object -ComObject WScript.Shell; $SC = $WS.CreateShortcut('%SHORTCUT%'); $SC.TargetPath = '%BATCH_PATH%'; $SC.WorkingDirectory = '%~dp0'; $SC.IconLocation = '%ICON_PATH%'; $SC.Save()"
 
 echo %GREEN%✓ Desktop shortcut created%RESET%
 echo.
