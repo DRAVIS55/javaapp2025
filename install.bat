@@ -62,7 +62,14 @@ set "SHORTCUT=%DESKTOP%\Student Management System.lnk"
 set "BATCH_PATH=%~dp0run_student_management.bat"
 set "ICON_PATH=%~dp0chuka2.ico"
 
-:: Create shortcut with custom icon using VBScript (more reliable than PowerShell)
+:: Check if icon exists
+if not exist "%ICON_PATH%" (
+    echo %RED%Error: Icon file not found at %ICON_PATH%%RESET%
+    pause
+    exit /b 1
+)
+
+:: Create shortcut with custom icon using VBScript
 echo Set oWS = WScript.CreateObject("WScript.Shell") > CreateShortcut.vbs
 echo sLinkFile = "%SHORTCUT%" >> CreateShortcut.vbs
 echo Set oLink = oWS.CreateShortcut(sLinkFile) >> CreateShortcut.vbs
@@ -74,7 +81,17 @@ echo oLink.Save >> CreateShortcut.vbs
 cscript //nologo CreateShortcut.vbs
 del CreateShortcut.vbs
 
-echo %GREEN%✓ Desktop shortcut created%RESET%
+:: Verify shortcut was created
+if exist "%SHORTCUT%" (
+    echo %GREEN%✓ Desktop shortcut created successfully%RESET%
+    echo %GREEN%Location: %SHORTCUT%%RESET%
+) else (
+    echo %RED%Error: Failed to create desktop shortcut%RESET%
+    echo %YELLOW%Please try running the installer as administrator%RESET%
+    pause
+    exit /b 1
+)
+
 echo.
 
 :: Show completion message
