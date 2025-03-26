@@ -18,29 +18,6 @@ echo ║                     Student Management System Installer                
 echo ╚════════════════════════════════════════════════════════════════════════════╝%RESET%
 echo.
 
-:: Show menu
-echo %YELLOW%Please select an option:%RESET%
-echo 1. Install Student Management System
-echo 2. Uninstall Student Management System
-echo 3. Exit
-echo.
-set /p "CHOICE=Enter your choice (1-3): "
-
-if "%CHOICE%"=="2" (
-    call uninstall.bat
-    exit /b 0
-)
-
-if "%CHOICE%"=="3" (
-    exit /b 0
-)
-
-if not "%CHOICE%"=="1" (
-    echo %RED%Invalid choice. Exiting...%RESET%
-    pause
-    exit /b 1
-)
-
 :: Check Java
 echo %YELLOW%Checking Java installation...%RESET%
 java -version >nul 2>&1
@@ -85,8 +62,17 @@ set "SHORTCUT=%DESKTOP%\Student Management System.lnk"
 set "BATCH_PATH=%~dp0run_student_management.bat"
 set "ICON_PATH=%~dp0chuka2.ico"
 
-:: Create shortcut with custom icon
-powershell -Command "$WS = New-Object -ComObject WScript.Shell; $SC = $WS.CreateShortcut('%SHORTCUT%'); $SC.TargetPath = '%BATCH_PATH%'; $SC.WorkingDirectory = '%~dp0'; $SC.IconLocation = '%ICON_PATH%'; $SC.Save()"
+:: Create shortcut with custom icon using VBScript (more reliable than PowerShell)
+echo Set oWS = WScript.CreateObject("WScript.Shell") > CreateShortcut.vbs
+echo sLinkFile = "%SHORTCUT%" >> CreateShortcut.vbs
+echo Set oLink = oWS.CreateShortcut(sLinkFile) >> CreateShortcut.vbs
+echo oLink.TargetPath = "%BATCH_PATH%" >> CreateShortcut.vbs
+echo oLink.WorkingDirectory = "%~dp0" >> CreateShortcut.vbs
+echo oLink.IconLocation = "%ICON_PATH%" >> CreateShortcut.vbs
+echo oLink.Save >> CreateShortcut.vbs
+
+cscript //nologo CreateShortcut.vbs
+del CreateShortcut.vbs
 
 echo %GREEN%✓ Desktop shortcut created%RESET%
 echo.
