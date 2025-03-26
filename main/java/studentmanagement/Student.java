@@ -1,4 +1,4 @@
-package studentmanagement;
+package main.java.studentmanagement;
 
 //imports
 import java.io.BufferedWriter;

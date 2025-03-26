@@ -1,4 +1,4 @@
-package studentmanagement;
+package main.java.studentmanagement;
 public class Lecturer extends Person{
     private String name;
     public Lecturer(){}
