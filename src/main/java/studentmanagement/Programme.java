@@ -1,4 +1,4 @@
-package main.java.studentmanagement;
+package studentmanagement;
 public class Programme{
     public Programme(){}
     public void addProgramme(){}

@@ -1,4 +1,4 @@
-package main.java.studentmanagement;
+package studentmanagement;
 import javax.swing.*;
 import java.awt.*;
 

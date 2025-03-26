@@ -1,4 +1,4 @@
-package main.java.studentmanagement;
+package studentmanagement;
 public class Person{
     private String name;
     public Person(){}
