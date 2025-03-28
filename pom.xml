@@ -15,7 +15,12 @@
     </properties>
 
     <build>
-        <sourceDirectory>studentmanagement</sourceDirectory>
+        <sourceDirectory>src/main/java</sourceDirectory>
+        <resources>
+            <resource>
+                <directory>studentmanagement</directory>
+            </resource>
+        </resources>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
